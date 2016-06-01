@@ -13,7 +13,7 @@ rewrite, using `fetch` and IndexedDB.
 ## Requirements
 
 Since this is designed for use inside Service Workers I haven't added any shims for older
-browsers. So it *requires* IndexedDB and `fetch` support.
+browsers. So it *requires* IndexedDB, `fetch` and Promise support.
 
 ## Additional features
 
@@ -22,6 +22,8 @@ the IndexedDB, so if it cannot connect to the GA server it'll store requests off
 the next time an analytics call is made. 
 
 ## How do I use it?
+
+    npm install google-analytics-protocol
 
 The actual call itself is very basic and uses the attributes specified in the protocol reference.
 
@@ -36,3 +38,9 @@ Use `setAnalyticsID()` to specify your ID before trying to send any calls.
         dh: 'localhost.com',
         dp: '/index.html'
     })
+    
+## Tests
+
+Tests can be run in a Node environment by running:
+
+    npm test
