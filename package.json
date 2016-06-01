@@ -1,0 +1,24 @@
+{
+  "name": "google-analytics-protocol",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha --recursive ./test-bootstrap tests"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "promise-map": "^1.1.0",
+    "query-string": "^4.2.0",
+    "treo": "^0.5.1"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "^1.0.6",
+    "mocha": "^2.5.3",
+    "nock": "^8.0.0",
+    "node-fetch": "^1.5.3",
+    "sqlite3": "^3.1.4",
+    "treo": "^0.5.1"
+  }
+}
