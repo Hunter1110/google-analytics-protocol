@@ -9,6 +9,19 @@ const splitIntoGroupsOfTwenty = function (arr) {
     }
 }
 
+let hasBackgroundSyncSupport = typeof(self) !== 'undefined' && self.registration && self.registration.sync;
+const syncTag = 'analytics_sync';
+
+if (hasBackgroundSyncSupport) {
+    self.addEventListener('sync', (event) => {
+        if (event.tag !== syncTag) {
+            return;
+        }
+        console.info("Running analytics sync task...")
+        event.waitUntil(sync());
+    })
+}
+
 const sendBatchRequest = function (batch) {
     
     if (batch.length === 0) {
@@ -42,13 +55,13 @@ const sendBatchRequest = function (batch) {
 let syncCurrentlyRunning = false;
 
 const sync = function() {
-
+    
     if (syncCurrentlyRunning === true) {
         // we only want to be running this once at a time,
         // otherwise we might end up sending events twice
         return Promise.resolve();
     }
-    
+    console.info("Running analytics sync...")
     syncCurrentlyRunning = true;
     
     return EventStore.getAllPendingCalls()
@@ -83,6 +96,18 @@ const sync = function() {
         if (runAgain) {
             return sync();
         }
+    })
+    .catch((err) => {
+
+        // Was trying to use service worker sync, but it fails when
+        // it doesn't have a window context:
+
+        // "You can only register for a sync event when the user has a window open to the site."
+        // https://developers.google.com/web/updates/2015/12/background-sync?hl=en
+
+        // if sync failed, register to retry next time.
+        //console.warn("Requesting sync task to send analytics");
+        //self.registration.sync.register(syncTag);
     })
 }
 

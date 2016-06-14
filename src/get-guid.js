@@ -1,5 +1,5 @@
 const db = require('./db');
-const createGuid = require('./create-guid');
+const createGuid = require('create-guid');
 
 /*
  * It seems more than a little silly to create an object store

@@ -6,10 +6,17 @@ const promiseDelay = (delay) => {
     return new Promise((fulfill) => setTimeout(fulfill, delay));
 }
 
-module.exports = function(call) {
+let warnedAboutNoID = false;
+
+module.exports = function(call, returnSyncPromise = false) {
     
     if (!config.GA_ID) {
-        throw new Error("Need to specify analytics ID with setAnalyticsID() before sending any calls.")
+        if (warnedAboutNoID === false) {
+            console.warn("Need to specify analytics ID with setAnalyticsID() before sending any calls. Will not send any in this session.");
+            warnedAboutNoID = true;
+        }
+        console.info("Analytics call:", call);
+        return Promise.resolve();
     }
     
     return eventStore.add(call)
@@ -19,7 +26,15 @@ module.exports = function(call) {
         return promiseDelay(100);
     })
     .then(() => {
-        return sync();
+        
+        let syncPromise = sync();
+        if (returnSyncPromise) {
+            // mostly just for testing
+            return syncPromise;
+        } else {
+            // We are NOT returning sync because we don't want any existing
+            // promise chain to wait for it to complete.
+        }
     })
 }
 

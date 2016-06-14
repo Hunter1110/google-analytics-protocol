@@ -12,7 +12,7 @@ describe("Main function call", function() {
             t: 'pageview',
             dh: 'localhost.com',
             dp: '/index.html'
-        })
+        }, true)
         .then(() => {
             nockInstance.done();
         })
