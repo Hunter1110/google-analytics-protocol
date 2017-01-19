@@ -2,6 +2,7 @@ const db = require('./db');
 const config = require('./config');
 const getGuid = require('./get-guid');
 const PromiseMap = require('promise-map');
+const detectDevice = require('./detect-device');
 
 module.exports = {
     add(call) {
@@ -19,6 +20,17 @@ module.exports = {
                 tid: config.GA_ID,
                 cid: guid
             });
+
+            // For storing custom dimension stuff
+            for (var prop in completeCall) {
+                if (completeCall.hasOwnProperty(prop)) {
+                    var callVal = completeCall[prop];
+
+                    if (typeof callVal === 'string') {
+                        completeCall[prop] = callVal.replace('{{clientId}}', guid);
+                    }
+                }
+            }
             
             return db.store("analyticsPings").put({
                 call: completeCall,
