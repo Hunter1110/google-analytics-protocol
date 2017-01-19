@@ -2,7 +2,6 @@ const db = require('./db');
 const config = require('./config');
 const getGuid = require('./get-guid');
 const PromiseMap = require('promise-map');
-const detectDevice = require('./detect-device');
 
 module.exports = {
     add(call) {
