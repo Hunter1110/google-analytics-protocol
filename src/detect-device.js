@@ -1,5 +1,5 @@
 module.exports = function() {
-	if (!navgiator) {
+	if (!navigator) {
 		return null;
 	}
 
