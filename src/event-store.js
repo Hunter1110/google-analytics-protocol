@@ -2,6 +2,7 @@ const db = require('./db');
 const config = require('./config');
 const getGuid = require('./get-guid');
 const PromiseMap = require('promise-map');
+const detectDevice = require('./detect-device');
 
 module.exports = {
     add(call) {
@@ -26,7 +27,9 @@ module.exports = {
                     var callVal = completeCall[prop];
 
                     if (typeof callVal === 'string') {
-                        completeCall[prop] = callVal.replace('{{clientId}}', guid);
+                        completeCall[prop] = callVal.replace('{{clientId}}', guid)
+                                                    .replace('{{platform}}', detectDevice());
+
                     }
                 }
             }
