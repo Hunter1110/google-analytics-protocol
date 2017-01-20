@@ -1,8 +1,4 @@
 module.exports = function() {
-	if (!navigator) {
-		return null;
-	}
-
   	var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
   	if (!userAgent) {
