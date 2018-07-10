@@ -49,7 +49,9 @@ const sendBatchRequest = function (batch) {
     })
     .then((res) => {
         return res.status === 200;  
-    })
+    }).catch(() => {
+        return false;
+    });
 }
 
 let syncCurrentlyRunning = false;
